@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
-USE aPP\Exception\NotFoundException;
+use App\Exception\NotFoundException;
 
 class Config
 {
@@ -13,7 +13,7 @@ class Config
     {
         $fileContent = self::getFileContent($filename);
 
-        if($key === null) {
+        if ($key === null) {
             return $fileContent;
         }
 
@@ -31,7 +31,8 @@ class Config
             }
         } catch (\Throwable $e) {
             throw new NotFoundException(
-                sprintf("The specified file: %s was not found", $filename)
+                sprintf("The specified file: %s was not found", $filename),
+                // ["not found file", "data is passed"]
             );
 
             // die($e->getMessage());
