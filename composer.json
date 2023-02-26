@@ -1,0 +1,25 @@
+{
+    "name": "paton/php_unit_tdd",
+    "autoload": {
+        "psr-4": {
+            "Paton\\PhpUnitTdd\\": "src/",
+            "App\\": "Src"
+        }
+    },
+    "autoload-dev": {
+        "ps-4":{
+            "Tests\\": "Tests"
+        }
+    },
+
+
+    "authors": [
+        {
+            "name": "Patryk",
+            "email": "patryk.r.nowak@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "9.5"
+    }
+}
