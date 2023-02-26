@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+USE aPP\Exception\NotFoundException;
+
 class Config
 {
 
@@ -28,7 +30,7 @@ class Config
                 $fileContent = require($path);
             }
         } catch (\Throwable $e) {
-            throw new \RuntimeException(
+            throw new NotFoundException(
                 sprintf("The specified file: %s was not found", $filename)
             );
 
