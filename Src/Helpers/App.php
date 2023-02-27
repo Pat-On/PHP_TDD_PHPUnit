@@ -28,14 +28,14 @@ class App
         return $this->config['debug'];
     }
 
-    public function getEnvironment(): string | bool
+    public function getEnvironment(): string
     {
         if (!isset($this->config['env'])) {
-            return "production";
+            return 'production';
         }
-
-        return $this->config['debug'];
+        return $this->isTestMode() ? 'test' : $this->config['env'];
     }
+
     public function getLogPath(): string
     {
         if (!isset($this->config['log_path'])) {
@@ -53,6 +53,14 @@ class App
 
     public function getServerTime(): DateTimeInterface
     {
-        return new DateTime('now', new DateTimeZone('Europe/London')); 
+        return new DateTime('now', new DateTimeZone('Europe/London'));
+    }
+
+    public function isTestMode(): bool
+    {
+        if ($this->isRunningFromConsole() && defined('PHPUNIT_RUNNING') && PHPUNIT_RUNNING == true) {
+            return true;
+        }
+        return false;
     }
 }
