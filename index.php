@@ -12,21 +12,6 @@ require_once(__DIR__ . "/Src/Exception/exception.php");
 // echo __DIR__ ;
 
 
+$logger = new \App\Logger\Logger();
 
-$config = \App\Helpers\Config::getFileContent("fuuuu");
-
-// ERROR TEST
-$db = new mysqli('dfd', 'root', 'bnug');
-
-$application = new \App\Helpers\App();
-
-echo $application->getServerTime()->format('D-M-Y') . PHP_EOL;
-echo $application->getLogPath() . PHP_EOL;
-echo $application->getEnvironment() . PHP_EOL;
-echo $application->isDebugMode() . PHP_EOL;
-
-if ($application->isRunningFromConsole()) {
-    echo "FROM CONSOLE";
-} else {
-    echo "FROM BROWSER";
-}
+$logger->log(\App\Logger\LogLevel::EMERGENCY, "Test no level", ['exception' => 'blahj']);

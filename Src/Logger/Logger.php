@@ -123,7 +123,7 @@ class Logger implements LoggerInterface
         ) . PHP_EOL;
 
 
-        $fileName = sprintf("%s/%s-%s.log", $logPath, $env, $date('j.n.Y'));
+        $fileName = sprintf("%s/%s-%s.log", $logPath, $env, date('j.n.Y'));
         file_put_contents($fileName, $details, FILE_APPEND);
     }
 }
