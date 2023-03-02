@@ -77,6 +77,7 @@ class PDOQueryBuilder extends QueryBuilder
      */
     public function beginTransaction()
     {
+        $this->connection->beginTransaction();
     }
 
     /**
@@ -84,5 +85,6 @@ class PDOQueryBuilder extends QueryBuilder
      */
     public function affected()
     {
+        return $this->count();
     }
 }

@@ -27,8 +27,10 @@ class MySQLiQueryBuilder extends QueryBuilder
             $this->resultSet = $this->statement->get_result();
             // $this->results = $this->resultSet->fetchAll(MYSQLI_ASSOC);
 
-            while ($object = $this->resultSet->fetch_object()) {
-                $results[] = $object;
+            if ($this->resultSet) {
+                while ($object = $this->resultSet->fetch_object()) {
+                    $results[] = $object;
+                }
             }
             $this->results = $results;
         }
@@ -139,5 +141,17 @@ class MySQLiQueryBuilder extends QueryBuilder
         }
         // ['s', 'd', 's',] -> sds
         return implode('', $bindingTypes);
+    }
+
+    public function beginTransaction()
+    {
+        $this->connection->begin_transaction();
+    }
+
+    public function affected()
+    {
+        $this->statement->store_result();
+
+        return $this->statement->affected_rows;
     }
 }

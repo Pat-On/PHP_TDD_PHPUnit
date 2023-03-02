@@ -12,7 +12,7 @@ use App\Database\PDOQueryBuilder;
 use App\Helpers\Config;
 use App\Helpers\DbQueryBuilderFactory;
 
-class QueryBuilderTest extends TestCase
+class QueryBuilderPDOTest extends TestCase
 {
 
     /** @var QueryBuilder $queryBuilder*/
@@ -24,14 +24,14 @@ class QueryBuilderTest extends TestCase
 
 
         // the same way is done in phpunit nice! 
-        $this->queryBuilder->getConnection()->beginTransaction();
+        $this->queryBuilder->beginTransaction();
 
         parent::setUp();
     }
 
     public function tearDown(): void
     {
-        $this->queryBuilder->getConnection()->rollback();
+        $this->queryBuilder->rollback();
         parent::tearDown();
     }
 
@@ -59,6 +59,7 @@ class QueryBuilderTest extends TestCase
             ->table('reports')
             ->select('*')
             ->where('id', $id)
+            ->runQuery()
             ->first();
 
         self::assertNotNull($result);
@@ -73,6 +74,7 @@ class QueryBuilderTest extends TestCase
             ->select('*')
             ->where('id', $id)
             ->where('report_type', '=', "Report Type 1")
+            ->runQuery()
             ->first();
 
         self::assertNotNull($result);
@@ -98,7 +100,7 @@ class QueryBuilderTest extends TestCase
     public function testItCanFindById()
     {
         $id = $this->insertIntoTable();
-        $result = $this->queryBuilder->select("*")->find($id);
+        $result = $this->queryBuilder->table('reports')->select("*")->find($id);
         self::assertNotNull($result);
         self::assertSame((int)$id, $result->id);
         self::assertSame("Report Type 1", $result->report_type);
@@ -107,7 +109,7 @@ class QueryBuilderTest extends TestCase
     public function testItCanFindOneByGivenValue()
     {
         $id = $this->insertIntoTable();
-        $result = $this->queryBuilder->select("*")->findOneBy('report_type', 'Report Type 1');
+        $result = $this->queryBuilder->table('reports')->select("*")->findOneBy('report_type', 'Report Type 1');
         self::assertNotNull($result);
         self::assertSame((int)$id, $result->id);
         self::assertSame("Report Type 1", $result->report_type);
@@ -119,7 +121,7 @@ class QueryBuilderTest extends TestCase
 
         $count = $this->queryBuilder->table('reports')->update(
             ['report_type' => 'Report Type 1 Updated']
-        )->where('id', $id)->count();
+        )->where('id', $id)->runQuery()->affected();
         self::assertEquals(1, $count);
 
         $result = $this->queryBuilder->select("*")->find($id);
@@ -132,7 +134,7 @@ class QueryBuilderTest extends TestCase
     {
         $id = $this->insertIntoTable();
 
-        $count = $this->queryBuilder->table('reports')->delete()->where('id', $id)->count();
+        $count = $this->queryBuilder->table('reports')->delete()->where('id', $id)->runQuery()->affected();
         self::assertEquals(1, $count);
 
         $result = $this->queryBuilder->select("*")->find($id);
