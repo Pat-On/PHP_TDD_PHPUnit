@@ -3,13 +3,9 @@
 
 namespace Test\Units;
 
-use App\Database\MySQLiConnection;
-use App\Database\MySQLiQueryBuilder;
 use PHPUnit\Framework\TestCase;
 use App\Database\QueryBuilder;
-use App\Database\PDOconnection;
-use App\Database\PDOQueryBuilder;
-use App\Helpers\Config;
+
 use App\Helpers\DbQueryBuilderFactory;
 
 class QueryBuilderPDOTest extends TestCase
