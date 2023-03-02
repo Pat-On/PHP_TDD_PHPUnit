@@ -6,11 +6,11 @@ namespace App\Repository;
 
 use App\Repository\Repository;
 
-use Apo\Entity\BugReport;
+use App\Entity\BugReport;
 
 class BugReportRepository extends Repository
 {
-    protected static $table = "report";
+    protected static $table = "reports";
 
     protected static $className = BugReport::class;
 
