@@ -159,7 +159,7 @@ abstract class QueryBuilder
     abstract public function lastInsertedId();
     abstract public function prepare($query);
     abstract public function execute($statement);
-    abstract public function fetchInfo($className);
+    abstract public function fetchInto($className);
 
     abstract public function beginTransaction();
 

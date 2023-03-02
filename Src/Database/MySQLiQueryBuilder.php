@@ -97,7 +97,7 @@ class MySQLiQueryBuilder extends QueryBuilder
      * @param mixed $className
      * @return mixed
      */
-    public function fetchInfo($className)
+    public function fetchInto($className)
     {
         $results = [];
         $this->resultSet = $this->statement->get_result();
