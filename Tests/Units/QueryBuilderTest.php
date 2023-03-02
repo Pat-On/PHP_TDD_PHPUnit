@@ -49,7 +49,7 @@ class QueryBuilderTest extends TestCase
     {
         $this->insertIntoTable();
         $result = $this->queryBuilder->raw('SELECT * FROM reports')->get();
-        Self::assertNotNull($result);
+        self::assertNotNull($result);
     }
 
     public function testItCanPerformSelectQuery()
@@ -61,8 +61,8 @@ class QueryBuilderTest extends TestCase
             ->where('id', $id)
             ->first();
 
-        Self::assertNotNull($result);
-        Self::assertSame((int)$id, $result->id);
+        self::assertNotNull($result);
+        self::assertSame((int)$id, $result->id);
     }
 
     public function testItCanPerformSelectQueryWithMultipleWhereClause()
@@ -75,9 +75,9 @@ class QueryBuilderTest extends TestCase
             ->where('report_type', '=', "Report Type 1")
             ->first();
 
-        Self::assertNotNull($result);
-        Self::assertSame((int)$id, $result->id);
-        Self::assertSame("Report Type 1", $result->report_type);
+        self::assertNotNull($result);
+        self::assertSame((int)$id, $result->id);
+        self::assertSame("Report Type 1", $result->report_type);
     }
 
     private function insertIntoTable()
@@ -93,6 +93,54 @@ class QueryBuilderTest extends TestCase
         $id = $this->queryBuilder->table('reports')->create($data);
         return $id;
     }
+
+
+    public function testItCanFindById()
+    {
+        $id = $this->insertIntoTable();
+        $result = $this->queryBuilder->select("*")->find($id);
+        self::assertNotNull($result);
+        self::assertSame((int)$id, $result->id);
+        self::assertSame("Report Type 1", $result->report_type);
+    }
+
+    public function testItCanFindOneByGivenValue()
+    {
+        $id = $this->insertIntoTable();
+        $result = $this->queryBuilder->select("*")->findOneBy('report_type', 'Report Type 1');
+        self::assertNotNull($result);
+        self::assertSame((int)$id, $result->id);
+        self::assertSame("Report Type 1", $result->report_type);
+    }
+
+    public function testItCanUpdateGivenRecord()
+    {
+        $id = $this->insertIntoTable();
+
+        $count = $this->queryBuilder->table('reports')->update(
+            ['report_type' => 'Report Type 1 Updated']
+        )->where('id', $id)->count();
+        self::assertEquals(1, $count);
+
+        $result = $this->queryBuilder->select("*")->find($id);
+        self::assertNotNull($result);
+        self::assertSame((int)$id, $result->id);
+        self::assertSame("Report Type 1 Updated", $result->report_type);
+    }
+
+    public function testItCanDeleteGivenId()
+    {
+        $id = $this->insertIntoTable();
+
+        $count = $this->queryBuilder->table('reports')->delete()->where('id', $id)->count();
+        self::assertEquals(1, $count);
+
+        $result = $this->queryBuilder->select("*")->find($id);
+        self::assertNull($result);
+    }
+
+
+
 
     // public function testBindings()
     // {

@@ -131,7 +131,7 @@ abstract class QueryBuilder
 
     public function first()
     {
-        return $this->count() ? $this->get()[0] : '';
+        return $this->count() ? $this->get()[0] : null;
     }
 
     /**
