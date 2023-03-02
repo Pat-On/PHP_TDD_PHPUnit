@@ -21,9 +21,16 @@ class MySQLiQueryBuilder extends QueryBuilder
      */
     public function get()
     {
+        $results = [];
+
         if (!$this->resultSet) {
             $this->resultSet = $this->statement->get_result();
-            $this->results = $this->resultSet->fetchAll(MYSQLI_ASSOC);
+            // $this->results = $this->resultSet->fetchAll(MYSQLI_ASSOC);
+
+            while ($object = $this->resultSet->fetch_object()) {
+                $results[] = $object;
+            }
+            $this->results = $results;
         }
 
         return $this->results;
@@ -67,18 +74,16 @@ class MySQLiQueryBuilder extends QueryBuilder
     public function execute($statement)
     {
         if (!$statement) {
-            throw new InvalidArgumentException("MySQLI statement is false");
+            throw new InvalidArgumentException('MySQLi statement is false');
         }
 
         if ($this->bindings) {
             $bindings = $this->parseBindings($this->bindings);
             $reflectionObj = new \ReflectionClass('mysqli_stmt');
             $method = $reflectionObj->getMethod('bind_param');
-
             $method->invokeArgs($statement, $bindings);
         }
-
-        $this->statement->execute();
+        $statement->execute();
         $this->bindings = [];
         $this->placeholders = [];
 
@@ -105,23 +110,19 @@ class MySQLiQueryBuilder extends QueryBuilder
     {
         $bindings = [];
         $count = count($params);
-
         if ($count === 0) {
-            // nothing to process
             return $this->bindings;
         }
 
-        $bindingTypes = $this->parseBindingsTypes();
-        // & assignment by reference
+        $bindingTypes = $this->parseBindingTypes(); //"sids"
         $bindings[] = &$bindingTypes;
         for ($index = 0; $index < $count; $index++) {
-            $bindings = &$params[$index];
+            $bindings[] = &$params[$index];
         }
-
         return $bindings;
     }
 
-    public function parseBindingsTypes()
+    public function parseBindingTypes()
     {
         $bindingTypes = [];
 

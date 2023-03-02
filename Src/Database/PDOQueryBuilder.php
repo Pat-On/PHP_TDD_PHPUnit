@@ -48,7 +48,7 @@ class PDOQueryBuilder extends QueryBuilder
     public function execute($statement)
     {
         $statement->execute($this->bindings);
-        var_dump($this->bindings);
+        // var_dump($this->bindings);
         $this->bindings = [];
         $this->placeholders = [];
         return $statement;
