@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use App\Helpers\DbQueryBuilderFactory;
 use App\Database\QueryBuilder;
 use App\Entity\BugReport;
+use App\Helpers\HttpClient;
 
 class CrudTest extends TestCase
 {
